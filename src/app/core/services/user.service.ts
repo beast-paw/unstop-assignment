@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { User } from 'src/app/shared/models/user.model';
-// import { User } from './models/user.model'; // update path if needed
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
@@ -16,7 +15,7 @@ export class UserService {
   }
   applyRoleFilter(role: any) {
     if (!role) {
-      this.usersSubject.next([...this.allUsers]); // Reset to all
+      this.usersSubject.next([...this.allUsers]);
     } else {
       const filtered = this.allUsers.filter(user => user.role === role);
       this.usersSubject.next(filtered);

@@ -5,7 +5,6 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
 import { UserDashboardComponent } from './features/dashboard/user-dashboard/user-dashboard.component';
-// import { UserDashboardComponent } from './dashboard/user-dashboard.component';
 
 @NgModule({
   declarations: [
