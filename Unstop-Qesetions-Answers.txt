@@ -1,0 +1,304 @@
+Questions Answers 
+1.  Angular Fundamentals 
+
+1. Can you explain the component structure you implemented for the user dashboard?
+Ans: 
+src/
+├── app/
+   ├── core/
+   │   └── services/
+   │       └── user.service.ts        # Shared user data logic (BehaviorSubject)
+   ├── features/
+   │   ├── dashboard/
+   │   │   ├── user-dashboard.component.ts   # Main dashboard view
+   │   │   ├── user-dashboard.component.html
+   │   │   └── user-dashboard.component.scss
+   │   ├── user-form/
+   │   │   ├── user-form.component.ts        # Lazy-loaded form modal
+   │   │   ├── user-form.component.html
+   │   │   ├── user-form.component.scss
+   │   │   ├── user-form.module.ts
+   │   │   └── user-form-routing.module.ts
+   │   ├── user-filter/
+   │   │   ├── user-filter.component.ts      # Lazy-loaded filter modal
+   │   │   ├── user-filter.component.html
+   │   │   ├── user-filter.component.scss
+   │   │   ├── user-filter.module.ts
+   │   │   └── user-filter-routing.module.ts
+   ├── shared/
+   │   └── models/
+   │       └── user.model.ts          # User interface
+   ├── app.component.ts
+   ├── app.module.ts
+   └── app-routing.module.ts
+   
+-> UserDashboardComponent: Displays a list of users in a table and Contains a chart showing role distribution.
+-> UserFormComponent (Popup): Lazy loaded form with name, email, role (validated).
+-> UserFilterComponent (Popup): Form to filter users by role.
+-> UserService : centralized state management service.
+
+2.  What are some best practices you followed while creating the user dashboard in Angular? 
+Ans: 
+-> Lazy Loading of Features
+-> Component-Based Architecture
+-> Reactive Forms with Validation
+-> Reactive State Management with BehaviorSubject
+-> Validation Messages 
+-> Centralized Business Logic in Services
+
+3. Why did you choose to use lazy loading for the user form and Chart.js? How does it improve performance? 
+Ans: Reson to choose lazy loading for: 
+  user-form -  It's not always needed (needed when user click the add user button)
+  chart.js  - It's a large library in terms of size
+  
+  It improves the performane in following ways: 
+  - Smaller bundle size SO, Faster app load times
+  - Optimized resource use
+  - Lower memory footprint so less CPU/RAM usage
+  
+4. How does Angular handle dependency injection, and how did you use it in this project?
+Ans: 
+Angular handle depondency injection in following ways: 
+a. On creation of a service @Injectable tells Angular this service can be injected. providedIn: 'root' makes it a singleton, shared across the app.
+b. Angular registers the service in a dependency injection container.
+c. Services can be injected via the constructor of a component or another service.
+
+Uses in UserDashBoard project. 
+-> I ahve creaeted a service named UserService to add and filter user.
+-> I have also used the form builder and router 
+
+5. How would you optimize this application for better performance in a large-scale project? 
+Ans: 
+- Lazy Loading
+- Tree Shaking & Smaller Bundles
+- Efficient State Management
+- Use TrackBy in ngFor
+- Modular Architectur
+- Use Ahead-of-Time (AOT) Compilation
+- Minimize Third-Party Dependencies
+- Use route guards to prevent loading unauthorized routes.
+
+
+2.  RxJS and State Management
+
+1. How did you manage the user data updates in your implementation? 
+Ans: I have used Centralized State with BehaviorSubject because it always holds the latest value. And in the component i g=have subscribed to users$ using async pipe.
+
+2. What is a  BehaviorSubject  , and why did you use it  in this project?
+Ans: A BehaviorSubject is a special type of RxJS Subject that always stores the latest value it emitted.Emits the value immediately to any new subscribers.
+I have used this because of following reasons: 
+a. Real-time updates across components (dashboard, filter, form)
+b. Enables filtering without backend 
+
+3. What are the differences between  Subject  ,  BehaviorSubject  ,  and  ReplaySubject in RxJS? 
+ANS:  
+Subject - No initial value, and doesn’t replay old values to new subscribers.
+BehaviorSubject - Needs an initial value, and replays the latest value to new subscribers.
+ReplaySubject - Replays old values to new subscribers, based on a buffer size or time window.
+
+4.  How did you ensure that the user table and chart update dynamically after adding a user? 
+Ans: I have ussed UserService with BehaviorSubject when the new used added the updated user list is pushed to all subscribers in real-time.
+To updated chart.js dynamically i am reinitializing the chart with fresh data when user changes using ngOnInit life cycle hook.
+
+5.Can you explain how  subscribe()  and  async pipe  work  in Angular and which one you prefer for managing observables? 
+Ans: 
+subscribe() -  It is used to manually subscribe the data.When you call subscribe(), it starts receiving the values emitted by the Observable and triggers some logic when those values change.
+async pipe - The async pipe is a approach to handling Observables in the Angular template. It subscribes automatically to an Observable and updates the view whenever the value changes.
+Both the subscribe() method and async pipe have their own use cases: 
+ - async pipe is perfect for template binding and handling Observable data directly in the view.
+ - subscribe() is ideal when you need to manage side effects, perform additional logic, or access the emitted values programmatically in the component.
+
+3. Server-Side Rendering (SSR) in Angular.
+
+1. What is Server-Side Rendering (SSR) in Angular, and how does it differ from Client-Side Rendering (CSR)? 
+Ans: 
+Server-Side Rendering (SSR) is the process where the initial HTML content of a page is rendered on the server, rather than in the browser. The server sends the fully rendered HTML to the browser, and the browser then displays it to the user.
+CSR - the browser loads a minimal HTML page and downloads JavaScript code that renders the content in the browser. When a user visits a page, the browser downloads the necessary JavaScript, which then takes over and dynamically renders the content
+
+2.  What are the benefits of using Angular Universal for SSR? 
+Ans: 
+a. Improved SEO
+b. Faster Initial Page Load.
+c. Enhanced Performance
+d. Enhanced User Experience
+e. Easy Transition Between CSR and SSR
+f. Progressive Web Application (PWA) Support
+g. Reduced Server Load with Client-Side Hydration
+
+3. How does SSR improve SEO and performance for an Angular application?
+Ans: 
+a. Pre-rendered Content for Search Engines
+b. Improved Search Rankings
+c. More Reliable Indexing for Dynamic Content.
+
+4. What are the challenges of implementing SSR in an Angular project? 
+Ans: 
+a. Initial Setup Complexity - Angular Universal Setup
+b. Server-Side Infrastructure
+c. Handling of Third-Party Libraries (Many third-party JavaScript libraries are designed to work only on the client side (e.g., libraries for DOM manipulation, charts, or animations)).
+d.  State Transfer Between Server and Client
+e. Server Overload
+f. Development and Debugging Complexity
+
+5. How does SSR handle dynamic data coming from APIs? 
+Ans:
+In Server-Side Rendering (SSR) with Angular, dynamic data from APIs is handled as follows:
+
+Server-Side Fetching: On the server, API calls are made before rendering the HTML. The data is injected into the page, ensuring users receive fully rendered content with up-to-date information.
+
+Resolvers: Used to fetch data before a route is activated. This ensures data is available before the component renders, improving SSR performance.
+
+TransferState: Transfers data from the server to the client, so the client doesn't need to make duplicate API calls. Data fetched on the server is passed to the client via TransferState.
+
+Client-Side Hydration: After the SSR page is loaded, Angular "hydrates" the page, and the client-side application takes over for further updates and interactions.
+
+Caching: Implement caching strategies (server-side, browser, or CDN caching) to improve performance by reducing repeated API calls.
+
+6.  What are the web vitals 
+ans. Web Vitals are a set of metrics that measure the quality of user experience on the web, focusing on performance, interactivity, and visual stability
+a.Largest Contentful Paint - Measures loading performance.
+b. First Input Delay - Measures interactivity.
+c. Cumulative Layout Shift - Measures visual stability.
+
+7.  What is the impact of SSR on the Largest Contentful Paint (LCP) metric?
+ans: mpact of SSR on LCP: 
+     - Faster content display
+	 - Reduces Time to First Byte (TTFB)
+	 - Better perceived performance
+	 
+8.How does hydration work in SSR, and how does Angular reconcile server-rendered 
+content with client-side JavaScript? 
+ans:
+How Hydration Works in Angular:
+Server-Side Rendering:
+  Angular Universal renders the app into static HTML on the server and sends it to the browser.
+Client Bootstraps:
+  Once the page loads, Angular's client-side bundle (JavaScript) is downloaded.
+Hydration:
+  Angular reuses the existing HTML instead of re-rendering it. It attaches event listeners and restores component state, making the page fully interactive.
+
+How Angular Reconciles Server and Client:
+  Angular compares the server-rendered DOM with what the client would generate.
+  If they match, Angular hydrates the page without destroying the DOM.
+  If there's a mismatch (e.g., dynamic data changed), Angular may re-render parts of the DOM.
+
+9.What is TransferState in Angular Universal, and how does it help in optimizing API calls?
+Ans: TransferState in Angular Universal is a service that helps transfer data from server to client during Server-Side Rendering (SSR) to avoid duplicate API calls.
+
+10. What are the common pitfalls when enabling SSR in an existing Angular project? 
+Ans: 
+a. Browser-only APIs (has no window, document, localStorage, etc.)
+b. Third-party Libraries (Libraries using DOM or browser APIs )
+c. style or css issue 
+d. Hydration Mismatches
+e. State Mismatch Between Server and Client
+
+11.  How would you handle authentication and authorization in an SSR-enabled Angular application?
+Ans: 
+Authentication Handling : On each SSR request, extract the auth token from the cookie
+Authorization Handling : Can use Auth Guard to prevent to unautherized routes.
+
+
+4. Angular Build Process
+
+1.   What are the different types of Angular builds (JIT vs AOT)?
+ans:
+JIT (Just-in-Time) Compilation : Compilation happens in the browser at runtime. Use in Development mode (ng serve).
+AOT (Ahead-of-Time) Compilation : Compilation happens during the build time. Used in Production builds
+
+2. What are the key differences between development and production builds in Angular?
+ Ans: 
+Feature  	 Development Build	  Production Build
+Compilation	   JIT	                  AOT
+Source Maps  Enabled	          Disabled (by default)
+Bundle Size	 Larger	                 Smaller
+Debugging	 Easy	                  Harder
+Performance	 Slower	              Optimized & Faster
+
+3. How does Angular optimize production builds?
+Ans: 
+Ahead-of-Time (AOT) Compilation
+Tree Shaking
+Reduces the bundle size significantly.
+Minification & Uglification
+Dead Code Elimination
+Production Environment Configuration
+Source Maps Disabled
+CSS & HTML Minification
+Differential Loading (Modern Browsers)
+Static Asset Optimization
+
+4. What are source maps, and how do they help in debugging Angular applications?
+ Ans: Source maps are files that map the minified/transpiled JavaScript code (which runs in the browser) back to the original TypeScript source code written by developers.
+ Source map helps in debugging the application in following ways: 
+ - Readable Errors
+ - Browser DevTools Integration
+ - Improves Developer Experience
+ 
+5. What is the purpose of the  ng build --prod  flag, and  how does it affect the final build?
+Ans: The purpose of this flag to create a smaller, faster, and more secure version of the app for deployment.
+Effect of this in final build: 
+- AOT Compilation (Ahead-of-Time)
+- Minification & Uglification
+- Tree Shaking
+- Environment Replacement
+- Enables Optimizations
+
+6. How does Angular handle tree shaking and dead code elimination in production builds?
+ans: Tree shaking and dead code elimination are triggered by Webpack as part of the Angular build process.
+The result is a much smaller production bundle because only the code that is actually used in the app is included in the final output.
+
+7.   What are differential builds in Angular, and why are they useful? 
+Ans: Differential builds in Angular refer to the process of creating multiple builds of an application for different target environments (modern and legacy browsers) to optimize performance.
+They are useful in following ways: 
+- Differential builds allow Angular to produce optimized bundles for modern and legacy browsers, improving performance for users with modern browsers while still supporting older ones.
+- It reduces the bundle size for modern browsers, improving load times and user experience, while ensuring backward compatibility with older browsers like Internet Explorer 11.
+
+8.   What are service workers in Angular, and how do they impact performance? 
+Ans: Service Workers in Angular are a type of web worker that runs in the background and enables features like caching, background data synchronization, and push notifications in a web application.
+Imapct on performance: 
+- Offline Functionality
+- Faster Load Times
+- Efficient Network Requests
+- Push Notifications
+
+9. How do you configure lazy loading in Angular to optimize build size? 
+Ans: Already configured in UserDashBoard apllication 
+
+10.   What is Webpack, and how does Angular use it in the build process?
+Ans: ebpack is a popular open-source JavaScript module bundler. It takes JavaScript files, along with other assets like images, styles, and HTML files, and bundles them into one or more output files (bundles)
+
+ Angular use it in the build process for: 
+ - Bundling and Compilation
+ - Code Splitting
+ - Tree Shaking
+ - Asset Management
+ - Minification and Uglification
+ - Development Server
+ 
+11. If the application needed to support internationalization (i18n), how would you implement it? 
+Ans: To implement Internationalization (i18n) in an Angular application, you need to provide support for multiple languages and localize your application's content. Angular provides a built-in solution for i18n, but you can also use third-party libraries like ngx-translate for more flexibility.
+
+12.  How would you make this application more accessible (a11y) for users with disabilities? 
+Ans: - Semantic HTML Elements
+     - Keyboard Navigation
+	 - Color Contrast
+	 - Accessible Media (Images, Videos, Audio)
+	 - Notifications and Alerts
+	 - Text Size and Scaling
+	 
+13. What are the advantages and disadvantages of using Angular CDK Overlay for the modal popup instead of a third-party modal library? 
+Ans: 
+Advantages: 
+  - No External Dependencies:
+  - Customization
+  - Consistency with Angular
+Disadvantages: 
+  - Complexity 
+  - No Pre-Built UI Elements
+
+  
+
+
+
+
