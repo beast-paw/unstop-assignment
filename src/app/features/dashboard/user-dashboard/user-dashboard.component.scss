@@ -1,0 +1,55 @@
+.dashboard {
+  padding: 16px;
+}
+.chart-list{
+  display: flex;
+}
+.chart{
+  flex:1;
+  // position: fixed;
+  margin-left: 100px;
+}
+.list{
+  flex:2;
+}
+.filter{
+  flex:1;
+}
+.addUser{
+  flex:5;
+}
+.header{
+  display:flex;
+}
+#openFilter{
+  margin-right: 16px;
+}
+.btn {
+  background-color: #1c4980;
+  color: white;
+  padding: 8px 16px;
+  height: 48px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 24px;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 12px;
+  text-align: left;
+}
+
+  
+#roleChart {
+    width: 200px !important;
+    height: 200px !important;
+}

@@ -1,0 +1,35 @@
+<div class="dashboard">
+  <div class="header">
+    <div class="addUser">
+      <button class="btn" (click)="openUserForm()">Add User</button>
+    </div>
+    <div class="filter">
+      <button class="btn" (click)="openFilterForm()" id="openFilter"> Filter</button>
+      <button class="btn" (click)="clearFilter()"> Clear Filter</button>
+    </div>
+  </div>
+  <div class="chart-list">
+    <div class="list">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of (users$ | async)">
+            <td>{{ user.name }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.role }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>  
+    <div class ="chart">
+      <canvas id="roleChart"></canvas>
+    </div>
+  </div>
+  
+</div>
