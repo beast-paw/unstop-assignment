@@ -1,0 +1,19 @@
+<div class="modal-overlay">
+    <div class="modal">
+      <form *ngIf="filterForm" [formGroup]="filterForm" (ngSubmit)="onApply()">
+        <label>Role</label>
+        <select formControlName="role" class="input">
+          <option value="">Select Role</option>
+          <option value="Admin">Admin</option>
+          <option value="Editor">Editor</option>
+          <option value="Viewer">Viewer</option>
+        </select>
+        <button type="submit" class="btn">Submit</button>
+      </form>
+    </div>
+  </div>
+  
+  
+  
+  
+    

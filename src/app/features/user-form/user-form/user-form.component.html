@@ -1,0 +1,33 @@
+<div class="modal-overlay">
+  <div class="modal">
+    <form *ngIf="userForm" [formGroup]="userForm" (ngSubmit)="onSubmit()">
+      
+      <label>Name</label>
+      <input type="text" formControlName="name" class="input" />
+      <div class="error" *ngIf="(userForm.get('name')?.touched) && userForm.get('name')?.invalid">
+        Name is required.
+      </div>
+
+      <label>Email</label>
+      <input type="email" formControlName="email" class="input" />
+      <div class="error" *ngIf="(userForm.get('email')?.touched) && userForm.get('email')?.invalid">
+        <div *ngIf="userForm.get('email')?.errors?.['required']">Email is required.</div>
+        <div *ngIf="userForm.get('email')?.errors?.['email']">Email must be valid.</div>
+      </div>
+
+      <label>Role</label>
+      <select formControlName="role" class="input">
+        <option value="">Select Role</option>
+        <option value="Admin">Admin</option>
+        <option value="Editor">Editor</option>
+        <option value="Viewer">Viewer</option>
+      </select>
+      <div class="error" *ngIf="(userForm.get('role')?.touched) && userForm.get('role')?.invalid">
+        Role is required.
+      </div>
+
+      <button type="submit" class="btn">Submit</button>
+      <button  class="btn" (click)="onClose()">Close</button>
+    </form>
+  </div>
+</div>
